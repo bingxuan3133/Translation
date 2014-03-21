@@ -329,3 +329,49 @@ void test_getWordAndUpdate_should_get_a_zero_length_word_when_getting_no_word_be
 	
 	free(subString);
 }
+
+void test_stringCopy_should_copy_hello_only_to_a_char_array() {
+	String string = {.rawString = "hello world", .startIndex = 0, .length = 11};
+	char *buffer;
+	
+	buffer = stringCopy(&string, 0, 5);
+	
+	TEST_ASSERT_NOT_NULL(buffer);
+	TEST_ASSERT_EQUAL('h', buffer[0]);
+	TEST_ASSERT_EQUAL('e', buffer[1]);
+	TEST_ASSERT_EQUAL('l', buffer[2]);
+	TEST_ASSERT_EQUAL('l', buffer[3]);
+	TEST_ASSERT_EQUAL('o', buffer[4]);
+	TEST_ASSERT_EQUAL_STRING("hello", buffer);
+	
+	free(buffer);
+}
+
+void test_stringCopy_should_copy_world_only_to_a_char_array() {
+	String string = {.rawString = "hello world", .startIndex = 0, .length = 11};
+	char *buffer;
+	
+	buffer = stringCopy(&string, 6, 5);
+	
+	TEST_ASSERT_NOT_NULL(buffer);
+	TEST_ASSERT_EQUAL('w', buffer[0]);
+	TEST_ASSERT_EQUAL('o', buffer[1]);
+	TEST_ASSERT_EQUAL('r', buffer[2]);
+	TEST_ASSERT_EQUAL('l', buffer[3]);
+	TEST_ASSERT_EQUAL('d', buffer[4]);
+	TEST_ASSERT_EQUAL_STRING("world", buffer);
+	
+	free(buffer);
+}
+
+void test_stringCopy_should_copy_hello_world_to_a_char_array() {
+	String string = {.rawString = "hello world", .startIndex = 0, .length = 11};
+	char *buffer;
+	
+	buffer = stringCopy(&string, 0, string.length);
+	
+	TEST_ASSERT_NOT_NULL(buffer);
+	TEST_ASSERT_EQUAL_STRING("hello world", buffer);
+	
+	free(buffer);
+}
