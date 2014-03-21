@@ -7,11 +7,10 @@ typedef struct {
 	int length;
 } String;
 
-String *subString;
-
 // Function Prototype
 String *stringCreate(char *expression) ;
-void stringCopy(char *source, char*destination, int startLocation, int length);
+char *stringCopy(String *source, int relStartIndex, int length);
+char *stringCopyX(String *str, int relStartIndex, int length);
 
 void stringLeftTrim(String* string);
 void stringRightTrim(String *string);

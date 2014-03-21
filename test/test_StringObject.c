@@ -189,7 +189,7 @@ void test_stringRightTrim_should_do_nothing_on_a_null_string() {
 void test_getWordAndUpdate_should_get_the_first_word_before_a_space_delimiter() {
 	String oneLineString = {.rawString = "movwf 0x10", .startIndex = 0, .length = 10};
 
-	subString = getWordAndUpdate(&oneLineString, " ");
+	String *subString = getWordAndUpdate(&oneLineString, " ");
 		
 	TEST_ASSERT_EQUAL(6, oneLineString.startIndex);
 	TEST_ASSERT_EQUAL(4, oneLineString.length);
@@ -207,7 +207,7 @@ void test_getWordAndUpdate_should_get_the_first_word_before_a_space_delimiter() 
 void test_getWordAndUpdate_should_get_three_words_from_a_line_with_space_as_delimiter() {
 	String oneLineString = {.rawString = "wow wow wow", .startIndex = 0, .length = 11};
 
-	subString = getWordAndUpdate(&oneLineString, " ");
+	String *subString = getWordAndUpdate(&oneLineString, " ");
 		
 	TEST_ASSERT_EQUAL(4, oneLineString.startIndex);
 	TEST_ASSERT_EQUAL(7, oneLineString.length);
@@ -247,7 +247,7 @@ void test_getWordAndUpdate_should_get_three_words_from_a_line_with_space_as_deli
 void test_getWordAndUpdate_should_get_word_with_combination_of_delimiters() {
 	String oneLineString = {.rawString = "a b;c,d;e,", .startIndex = 0, .length = 10};
 
-	subString = getWordAndUpdate(&oneLineString, " ,;");
+	String *subString = getWordAndUpdate(&oneLineString, " ,;");
 		
 	TEST_ASSERT_EQUAL(2, oneLineString.startIndex);
 	TEST_ASSERT_EQUAL(8, oneLineString.length);
@@ -301,7 +301,7 @@ void test_getWordAndUpdate_should_get_word_with_combination_of_delimiters() {
 void test_getWordAndUpdate_should_get_a_zero_length_word_when_getting_words_beyond_the_line() {
 	String oneLineString = {.rawString = "hello hello", .startIndex = 0, .length = 11};
 
-	subString = getWordAndUpdate(&oneLineString, " ");
+	String *subString = getWordAndUpdate(&oneLineString, " ");
 	free(subString);
 	
 	subString = getWordAndUpdate(&oneLineString, " ");
@@ -320,7 +320,7 @@ void test_getWordAndUpdate_should_get_a_zero_length_word_when_getting_words_beyo
 void test_getWordAndUpdate_should_get_a_zero_length_word_when_getting_no_word_before_delimiters() {
 	String oneLineString = {.rawString = ";get me", .startIndex = 0, .length = 7};
 
-	subString = getWordAndUpdate(&oneLineString, " ,;");
+	String *subString = getWordAndUpdate(&oneLineString, " ,;");
 
 	TEST_ASSERT_EQUAL(1, oneLineString.startIndex);
 	TEST_ASSERT_EQUAL(6, oneLineString.length);

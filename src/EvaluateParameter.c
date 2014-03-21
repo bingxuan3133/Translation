@@ -3,17 +3,28 @@
 #include <stdio.h>
 #include <malloc.h>
 
-// global variable cannot malloc and it cannot be an array
-// if it is a pointer, it was initialized as pointing to NULL and then malloc
-// ExpectAndReturn will be called before the real function is called
-// ExpectAndReturn takes NULL as expectation, BUT in real function -> shuntingYard takes 0x10 (as it is malloced)
-
 Argument *evaluate1to2parameter(String *parameter) {
-	Argument *argument;
-	subString = getWordAndUpdate(parameter, ";");
+	Argument *argument = malloc(sizeof(Argument));
+	String *subString;
+	char* buffer;
 	
-	stringCopy(subString->rawString, &tempCharArray[0], subString->startIndex, subString->length);// <- destination must be array 
-	argument->operand1 = shuntingYard(&tempCharArray[0]);
+	subString = getWordAndUpdate(parameter, ",;");
+	if(subString->length != 0) {
+		buffer = stringCopyX(subString, 0, subString->length);
+		argument->operand1 = shuntingYard(buffer);
+	} else {
+		argument->operand1 = -1;
+	}
+	
+	subString = getWordAndUpdate(parameter, ",;");
+	if(subString->length != 0) {
+		buffer = stringCopyX(subString, 0, subString->length);
+		argument->operand2 = shuntingYard(buffer);
+	} else {
+		argument->operand2 = -1;
+	}
+	
+	argument->operand3 = -1;
 	
 	return argument;
 }

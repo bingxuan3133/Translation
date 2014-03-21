@@ -9,9 +9,18 @@ typedef struct {
 	int operand3;
 } Argument;
 
+typedef enum {
+	ACCESS = -5,
+	BANKED,
+	FILEREG,
+	WREG
+} Operand;
+
 typedef struct {
 	char *name;
 	Argument (*evaluate)(String *);
 } Opcode;
+
+Argument *evaluate1to2parameter(String *parameter);
 
 #endif // EvaluateParameter_H

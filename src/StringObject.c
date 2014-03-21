@@ -3,8 +3,6 @@
 #include <string.h>
 #include <malloc.h>
 
-
-
 /*
  * This function will generate a string
  *
