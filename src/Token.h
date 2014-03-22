@@ -1,6 +1,8 @@
 #ifndef Token_H
 #define Token_H
 
-int shuntingYard(char *expression);
+#include "StringObject.h"
+
+int evaluate(String *expression);
 
 #endif // Token_H

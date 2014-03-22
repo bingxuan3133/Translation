@@ -4,11 +4,11 @@
 #include <malloc.h>
 
 /*
- * This function will generate a string
+ * This function is to generate a string object
  *
  * Input: *expression 		which contain the string(expression)
  * Output: none
- * return: Tokenizer 		which pass to the getToken to generate token.
+ * return: newString 		A string object which contains the info of a string
  */
 String *stringCreate(char *expression) {
 	int length = strlen(expression);
@@ -26,12 +26,12 @@ String *stringCreate(char *expression) {
 /*
  * This function is to copy string from the middle of the string for specific length.
  * 
- * input :
- * *source				The string that contain the wanted string.
- * startLocation		The start location of the wanted string in source
+ * Input :
+ * *source				The string object which contains the wanted string
+ * relStartIndex		The relative start location of the wanted string source
  * length 				The length of the wanted string 
  * 
- * output:
+ * Output:
  * *destination 		The wanted string will be copied to this string.(must be in array to make this work)
  *	
  * return:
@@ -51,7 +51,7 @@ char *stringCopy(String *source, int relStartIndex, int length) {
 }
 
 /*
- * Trim out the left space/tab of string
+ * This function is to trim out the left space/tab of string
  *
  * Input:
  *	string	word or line of string
@@ -64,7 +64,7 @@ void stringLeftTrim(String *string) {
 }
 
 /*
- * Trim out the right space/tab of string
+ * This function is to trim out the right space/tab of string
  *
  * Input:
  *	string	word or line of string
@@ -76,7 +76,7 @@ void stringRightTrim(String *string) {
 }
 
 /*
- * Get word from a line according to delimiters and update the status of the line (startIndex and length)
+ * This function is to get word from a line according to delimiters and update the status of the line (startIndex and length)
  *
  * Input:
  *	line		A line of string
