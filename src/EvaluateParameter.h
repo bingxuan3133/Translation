@@ -21,6 +21,8 @@ typedef struct {
 	Argument (*evaluate)(String *);
 } Opcode;
 
+int isDelimiter(String *string, char delimiter);
+
 Argument *evaluate1to2parameter(String *parameter);
 
 #endif // EvaluateParameter_H

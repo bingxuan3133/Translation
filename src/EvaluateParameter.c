@@ -7,18 +7,29 @@
 
 Error exception;
 
-int isComment(String *rawOperand) {
-	int index = rawOperand->startIndex - 1;
+/*
+ * This function check the string is start from the specified delimiter or not
+ * Input:	*string		string object that is been checking
+ *			delimiter	specified delimiter that the string start from
+ *
+ * Return:	1	the string is start from the specified delimiter
+ *			0	the string is start from other delimiter (or not delimited)
+ */
+int isDelimiter(String *string, char delimiter) {
+	int index = string->startIndex - 1;
 
-	while(rawOperand->rawString[index] == ' ' || rawOperand->rawString[index] == '\t') {
+	while(string->rawString[index] == ' ' || string->rawString[index] == '\t') {
 		index--;
 	}
-	if(rawOperand->rawString[index] == ';')
+	if(string->rawString[index] == delimiter)
 		return 1;
 	else
 		return 0;
 }
 
+/*
+ * This function used by 1 to 2 parameter instructions to parse arguments
+ */
 Argument *evaluate1to2parameter(String *rawOperand) {
 	Argument *argument = malloc(sizeof(Argument));
 	String *subString = malloc(sizeof(String));
@@ -32,7 +43,9 @@ Argument *evaluate1to2parameter(String *rawOperand) {
 	
 	stringLeftTrim(rawOperand);
 	subString = getWordAndUpdate(rawOperand, ",;");
-	if(isComment(subString) == 1 || subString->length == 0) {
+	if(isDelimiter(subString, ',') == 1 && subString->length == 0) {
+		Throw(INVALID_ARGUMENT);
+	} else if(isDelimiter(subString, ';') == 1 || subString->length == 0) {
 		argument->operand2 = -1;
 		argument->operand3 = -1;
 		goto finish;
@@ -42,13 +55,13 @@ Argument *evaluate1to2parameter(String *rawOperand) {
 	
 	stringLeftTrim(rawOperand);
 	subString = getWordAndUpdate(rawOperand, ",;");
-	if(subString->length == 0) {
+	if(isDelimiter(subString, ';') || subString->length == 0) {
 		argument->operand3 = -1;
 	} else {
 		Throw(INVALID_ARGUMENT);
 	}
 
-	finish:
+finish:
 	
 	free(subString);
 	
