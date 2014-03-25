@@ -23,6 +23,7 @@ typedef struct {
 
 int isDelimiter(String *string, char delimiter);
 
-Argument *evaluate1to2parameter(String *parameter);
+Argument *evaluate1to2parameter(String *rawOperand);
+Argument *evaluate1to3parameter(String *rawOperand);
 
 #endif // EvaluateParameter_H

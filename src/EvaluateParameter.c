@@ -34,7 +34,9 @@ Argument *evaluate1to2parameter(String *rawOperand) {
 	Argument *argument = malloc(sizeof(Argument));
 	String *subString = malloc(sizeof(String));
 	
+	stringLeftTrim(rawOperand);
 	subString = getWordAndUpdate(rawOperand, ",;");
+	stringRightTrim(rawOperand);
 	if(subString->length != 0) {
 		argument->operand1 = evaluate(subString);
 	} else {
@@ -43,6 +45,7 @@ Argument *evaluate1to2parameter(String *rawOperand) {
 	
 	stringLeftTrim(rawOperand);
 	subString = getWordAndUpdate(rawOperand, ",;");
+	stringRightTrim(rawOperand);
 	if(isDelimiter(subString, ',') == 1 && subString->length == 0) {
 		Throw(INVALID_ARGUMENT);
 	} else if(isDelimiter(subString, ';') == 1 || subString->length == 0) {
@@ -55,6 +58,7 @@ Argument *evaluate1to2parameter(String *rawOperand) {
 	
 	stringLeftTrim(rawOperand);
 	subString = getWordAndUpdate(rawOperand, ",;");
+	stringRightTrim(rawOperand);
 	if(isDelimiter(subString, ';') || subString->length == 0) {
 		argument->operand3 = -1;
 	} else {
@@ -65,5 +69,58 @@ finish:
 	
 	free(subString);
 	
+	return argument;
+}
+
+Argument *evaluate1to3parameter(String *rawOperand) {
+	Argument *argument = malloc(sizeof(Argument));
+	String *subString = malloc(sizeof(String));
+	
+	stringLeftTrim(rawOperand);
+	subString = getWordAndUpdate(rawOperand, ",;");
+	stringRightTrim(rawOperand);
+	if(subString->length != 0) {
+		argument->operand1 = evaluate(subString);
+	} else {
+	printf("1st Word");
+		Throw(INVALID_ARGUMENT);
+	}
+	
+	stringLeftTrim(rawOperand);
+	subString = getWordAndUpdate(rawOperand, ",;");
+	stringRightTrim(rawOperand);
+	if(isDelimiter(subString, ',') == 1 && subString->length == 0) {
+		printf("2nd Word");
+		Throw(INVALID_ARGUMENT);
+	} else if(isDelimiter(subString, ';') == 1 || subString->length == 0) {
+		argument->operand2 = -1;
+		argument->operand3 = -1;
+		goto finish;
+	} else {
+		argument->operand2 = evaluate(subString);
+	}
+	
+	stringLeftTrim(rawOperand);
+	subString = getWordAndUpdate(rawOperand, ",;");
+	stringRightTrim(rawOperand);
+	if(isDelimiter(subString, ',') == 1 && subString->length == 0) {
+		printf("3rd Word");
+		Throw(INVALID_ARGUMENT);
+	} else if(isDelimiter(subString, ';') == 1 || subString->length == 0) {
+		argument->operand3 = -1;
+		goto finish;
+	} else {
+		argument->operand3 = evaluate(subString);
+	}
+	
+	stringLeftTrim(rawOperand);
+	subString = getWordAndUpdate(rawOperand, ",;");
+	stringRightTrim(rawOperand);
+	if(isDelimiter(subString, ';') == 0 && subString->length > 0) {
+		Throw(INVALID_ARGUMENT);
+	}
+
+finish:
+
 	return argument;
 }
