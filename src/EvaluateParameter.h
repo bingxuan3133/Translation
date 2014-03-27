@@ -25,5 +25,6 @@ int isDelimiter(String *string, char delimiter);
 
 Argument *evaluate1to2parameter(String *rawOperand);
 Argument *evaluate1to3parameter(String *rawOperand);
+Argument *evaluate2to3parameter(String *rawOperand);
 
 #endif // EvaluateParameter_H

@@ -72,6 +72,9 @@ finish:
 	return argument;
 }
 
+/*
+ * This function used by 1 to 3 parameter instructions to parse arguments
+ */
 Argument *evaluate1to3parameter(String *rawOperand) {
 	Argument *argument = malloc(sizeof(Argument));
 	String *subString = malloc(sizeof(String));
@@ -113,11 +116,61 @@ Argument *evaluate1to3parameter(String *rawOperand) {
 	stringLeftTrim(rawOperand);
 	subString = getWordAndUpdate(rawOperand, ",;");
 	stringRightTrim(subString);
-	if(isDelimiter(subString, ';') == 0 && subString->length > 0) {
+	if((isDelimiter(subString, ';') == 0 && subString->length > 0) || isDelimiter(subString, ',')) {
 		Throw(INVALID_ARGUMENT);
 	}
 
 finish:
+
+	return argument;
+}
+
+/*
+ * This function used by 2 to 3 parameter instructions to parse arguments
+ */
+Argument *evaluate2to3parameter(String *rawOperand) {
+	Argument *argument = malloc(sizeof(Argument));
+	String *subString = malloc(sizeof(String));
+	
+	stringLeftTrim(rawOperand);
+	subString = getWordAndUpdate(rawOperand, ",;");
+	stringRightTrim(subString);
+	if(subString->length != 0) {
+		argument->operand1 = evaluate(subString);
+	} else {
+		Throw(INVALID_ARGUMENT);
+	}
+	
+	stringLeftTrim(rawOperand);
+	subString = getWordAndUpdate(rawOperand, ",;");
+	stringRightTrim(subString);
+	if(subString->length != 0) {
+		argument->operand2 = evaluate(subString);
+	} else {
+		Throw(INVALID_ARGUMENT);
+	}
+	
+	stringLeftTrim(rawOperand);
+	subString = getWordAndUpdate(rawOperand, ",;");
+	stringRightTrim(subString);
+	if(isDelimiter(subString, ',') == 1 && subString->length == 0) {
+		Throw(INVALID_ARGUMENT);
+	} else if(isDelimiter(subString, ';') == 1 || subString->length == 0) {
+		argument->operand3 = -1;
+		goto finish;
+	} else {
+		argument->operand3 = evaluate(subString);
+	}
+	
+	stringLeftTrim(rawOperand);
+	subString = getWordAndUpdate(rawOperand, ",;");
+	stringRightTrim(subString);
+	if((isDelimiter(subString, ';') == 0 && subString->length > 0) || isDelimiter(subString, ',')) {
+		Throw(INVALID_ARGUMENT);
+	}
+
+finish:
+
 
 	return argument;
 }
