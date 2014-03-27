@@ -36,7 +36,7 @@ Argument *evaluate1to2parameter(String *rawOperand) {
 	
 	stringLeftTrim(rawOperand);
 	subString = getWordAndUpdate(rawOperand, ",;");
-	stringRightTrim(rawOperand);
+	stringRightTrim(subString);
 	if(subString->length != 0) {
 		argument->operand1 = evaluate(subString);
 	} else {
@@ -45,7 +45,7 @@ Argument *evaluate1to2parameter(String *rawOperand) {
 	
 	stringLeftTrim(rawOperand);
 	subString = getWordAndUpdate(rawOperand, ",;");
-	stringRightTrim(rawOperand);
+	stringRightTrim(subString);
 	if(isDelimiter(subString, ',') == 1 && subString->length == 0) {
 		Throw(INVALID_ARGUMENT);
 	} else if(isDelimiter(subString, ';') == 1 || subString->length == 0) {
@@ -58,7 +58,7 @@ Argument *evaluate1to2parameter(String *rawOperand) {
 	
 	stringLeftTrim(rawOperand);
 	subString = getWordAndUpdate(rawOperand, ",;");
-	stringRightTrim(rawOperand);
+	stringRightTrim(subString);
 	if(isDelimiter(subString, ';') || subString->length == 0) {
 		argument->operand3 = -1;
 	} else {
@@ -78,19 +78,17 @@ Argument *evaluate1to3parameter(String *rawOperand) {
 	
 	stringLeftTrim(rawOperand);
 	subString = getWordAndUpdate(rawOperand, ",;");
-	stringRightTrim(rawOperand);
+	stringRightTrim(subString);
 	if(subString->length != 0) {
 		argument->operand1 = evaluate(subString);
 	} else {
-	printf("1st Word");
 		Throw(INVALID_ARGUMENT);
 	}
 	
 	stringLeftTrim(rawOperand);
 	subString = getWordAndUpdate(rawOperand, ",;");
-	stringRightTrim(rawOperand);
+	stringRightTrim(subString);
 	if(isDelimiter(subString, ',') == 1 && subString->length == 0) {
-		printf("2nd Word");
 		Throw(INVALID_ARGUMENT);
 	} else if(isDelimiter(subString, ';') == 1 || subString->length == 0) {
 		argument->operand2 = -1;
@@ -102,9 +100,8 @@ Argument *evaluate1to3parameter(String *rawOperand) {
 	
 	stringLeftTrim(rawOperand);
 	subString = getWordAndUpdate(rawOperand, ",;");
-	stringRightTrim(rawOperand);
+	stringRightTrim(subString);
 	if(isDelimiter(subString, ',') == 1 && subString->length == 0) {
-		printf("3rd Word");
 		Throw(INVALID_ARGUMENT);
 	} else if(isDelimiter(subString, ';') == 1 || subString->length == 0) {
 		argument->operand3 = -1;
@@ -115,7 +112,7 @@ Argument *evaluate1to3parameter(String *rawOperand) {
 	
 	stringLeftTrim(rawOperand);
 	subString = getWordAndUpdate(rawOperand, ",;");
-	stringRightTrim(rawOperand);
+	stringRightTrim(subString);
 	if(isDelimiter(subString, ';') == 0 && subString->length > 0) {
 		Throw(INVALID_ARGUMENT);
 	}

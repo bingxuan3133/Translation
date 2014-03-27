@@ -169,21 +169,32 @@ void test_stringRightTrim_should_trim_string_with_right_tab() {
 	TEST_ASSERT_EQUAL('o', string.rawString[string.startIndex + 4]);
 }
 
-void test_stringRightTrim_should_do_nothing_on_a_null_string() {
+void test_stringRightTrim_should_work_properly_when_startIndex_is_not_0() {
+	String subString = {.rawString = "     0x10   " , .startIndex = 5, .length = 7};
+	
+	stringRightTrim(&subString);
+	TEST_ASSERT_EQUAL(5, subString.startIndex);
+	TEST_ASSERT_EQUAL(4, subString.length);
+	TEST_ASSERT_EQUAL('0', subString.rawString[subString.startIndex]);
+	TEST_ASSERT_EQUAL('x', subString.rawString[subString.startIndex+1]);
+	TEST_ASSERT_EQUAL('1', subString.rawString[subString.startIndex+2]);
+	TEST_ASSERT_EQUAL('0', subString.rawString[subString.startIndex+3]);
+}
+
+void test_stringRightTrim_should_do_nothing_on_a_0_length_string() {
 	// Test fixture
-	String string = {"", 0, 0};
+	String string = {"   ", 1, 0};
 	
 	//printf("Raw String: %s, Start Index: %d, Length: %d\n", string.rawString, string.startIndex, string.length);
 	
 	// Execute subject under test
-	stringLeftTrim(&string);
+	stringRightTrim(&string);
 	
 	//printf("Trimmed String: %s, Start Index: %d, Length: %d\n", string.rawString, string.startIndex, string.length);
 		
 	// Test the behavior or states
-	TEST_ASSERT_EQUAL(0, string.startIndex);
+	TEST_ASSERT_EQUAL(1, string.startIndex);
 	TEST_ASSERT_EQUAL(0, string.length);
-	TEST_ASSERT_EQUAL(0, string.rawString[string.startIndex]);
 }
 
 void test_getWordAndUpdate_should_get_the_first_word_before_a_space_delimiter() {

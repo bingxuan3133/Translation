@@ -118,6 +118,30 @@ void test_evaluate1to2parameter_should_parse_two_parameter_to_argument() {
 	free(argument);
 }
 
+void test_evaluate1to2parameter_should_parse_two_parameter_to_argument_without_space_sensetivity() {
+	Argument *argument;
+	String parameter = {.rawString = "movwf 0x10 , ACCESS" , .startIndex = 6, .length = 13};
+	String subString1 = {.rawString = "movwf 0x10 , ACCESS" , .startIndex = 6, .length = 4};
+	String subString2 = {.rawString = "movwf 0x10 , ACCESS" , .startIndex = 13, .length = 6};
+	
+	evaluate_ExpectAndReturn(&subString1, 0x10);
+	
+	evaluate_ExpectAndReturn(&subString2, ACCESS);
+
+	Try {
+		argument = evaluate1to2parameter(&parameter);
+	} Catch(exception) {
+		TEST_FAIL_MESSAGE("Should not throw exception");
+	}
+	
+	TEST_ASSERT_NOT_NULL(argument);
+	TEST_ASSERT_EQUAL(0x10, argument->operand1);
+	TEST_ASSERT_EQUAL(ACCESS, argument->operand2);
+	TEST_ASSERT_EQUAL(-1, argument->operand3);
+	
+	free(argument);
+}
+
 void test_evaluate1to2parameter_should_parse_one_parameter_with_comment_to_argument() {
 	Argument *argument;
 	String parameter = {.rawString = "movwf 0x10; comment" , .startIndex = 6, .length = 14};

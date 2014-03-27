@@ -70,7 +70,8 @@ void stringLeftTrim(String *string) {
  *	string	word or line of string
  */
 void stringRightTrim(String *string) {
-	while(string->rawString[string->length - 1] == ' ' || string->rawString[string->length - 1] == '\t') {
+	int i = string->startIndex;
+	while((string->rawString[i + string->length - 1] == ' ' || string->rawString[i + string->length - 1] == '\t') && string->length != 0) {
 		string->length--;
 	}
 }
