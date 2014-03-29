@@ -325,6 +325,81 @@ void test_evaluate1to3parameter_should_parse_three_parameter_to_argument() {
 	free(argument);
 }
 
+void test_evaluate1to3parameter_should_interpret_f_as_1_and_parse_three_parameter_to_argument() {
+	Argument *argument;
+	String parameter = {.rawString = "addwf 0x10, f, ACCESS", .startIndex = 6, .length = 15};
+	String subString1 = {.rawString = "addwf 0x10, f, ACCESS", .startIndex = 6, .length = 4};
+	String subString2 = {.rawString = "addwf 0x10, f, ACCESS", .startIndex = 12, .length = 1};
+	String subString3 = {.rawString = "addwf 0x10, f, ACCESS", .startIndex = 15, .length = 6};
+	
+	evaluate_ExpectAndReturn(&subString1, 0x10);
+
+	evaluate_ExpectAndReturn(&subString3, ACCESS);
+	
+	Try {
+		argument = evaluate1to3parameter(&parameter);
+	} Catch(exception) {
+		TEST_FAIL_MESSAGE("Should not throw exception");
+	}
+	
+	TEST_ASSERT_NOT_NULL(argument);
+	TEST_ASSERT_EQUAL(0x10, argument->operand1);
+	TEST_ASSERT_EQUAL(1, argument->operand2);
+	TEST_ASSERT_EQUAL(ACCESS, argument->operand3);
+	
+	free(argument);
+}
+
+void test_evaluate1to3parameter_should_interpret_w_as_0_and_parse_three_parameter_to_argument() {
+	Argument *argument;
+	String parameter = {.rawString = "addwf 0x10, w, ACCESS", .startIndex = 6, .length = 15};
+	String subString1 = {.rawString = "addwf 0x10, w, ACCESS", .startIndex = 6, .length = 4};
+	String subString2 = {.rawString = "addwf 0x10, w, ACCESS", .startIndex = 12, .length = 1};
+	String subString3 = {.rawString = "addwf 0x10, w, ACCESS", .startIndex = 15, .length = 6};
+	
+	evaluate_ExpectAndReturn(&subString1, 0x10);
+
+	evaluate_ExpectAndReturn(&subString3, ACCESS);
+	
+	Try {
+		argument = evaluate1to3parameter(&parameter);
+	} Catch(exception) {
+		TEST_FAIL_MESSAGE("Should not throw exception");
+	}
+	
+	TEST_ASSERT_NOT_NULL(argument);
+	TEST_ASSERT_EQUAL(0x10, argument->operand1);
+	TEST_ASSERT_EQUAL(0, argument->operand2);
+	TEST_ASSERT_EQUAL(ACCESS, argument->operand3);
+	
+	free(argument);
+}
+
+void test_evaluate1to3parameter_should_interpret_f_as_1_and_parse_three_parameter_to_argument() {
+	Argument *argument;
+	String parameter = {.rawString = "addwf 0x10, f, ACCESS", .startIndex = 6, .length = 15};
+	String subString1 = {.rawString = "addwf 0x10, f, ACCESS", .startIndex = 6, .length = 4};
+	String subString2 = {.rawString = "addwf 0x10, f, ACCESS", .startIndex = 12, .length = 1};
+	String subString3 = {.rawString = "addwf 0x10, f, ACCESS", .startIndex = 15, .length = 6};
+	
+	evaluate_ExpectAndReturn(&subString1, 0x10);
+
+	evaluate_ExpectAndReturn(&subString3, ACCESS);
+	
+	Try {
+		argument = evaluate1to3parameter(&parameter);
+	} Catch(exception) {
+		TEST_FAIL_MESSAGE("Should not throw exception");
+	}
+	
+	TEST_ASSERT_NOT_NULL(argument);
+	TEST_ASSERT_EQUAL(0x10, argument->operand1);
+	TEST_ASSERT_EQUAL(1, argument->operand2);
+	TEST_ASSERT_EQUAL(ACCESS, argument->operand3);
+	
+	free(argument);
+}
+
 void test_evaluate1to3parameter_should_parse_one_parameter_with_comment_to_argument() {
 	Argument *argument;
 	String parameter = {.rawString = "addwf 0x10;   comment", .startIndex = 6, .length = 15};

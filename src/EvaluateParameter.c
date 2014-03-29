@@ -9,11 +9,11 @@ Error exception;
 
 /*
  * This function check the string is start from the specified delimiter or not
- * Input:	*string		string object that is been checking
- *			delimiter	specified delimiter that the string start from
+ * Input:	*string		String object that is been checking
+ *			delimiter	Specified delimiter that the string start from
  *
- * Return:	1	the string is start from the specified delimiter
- *			0	the string is start from other delimiter (or not delimited)
+ * Return:	1	The string is start from the specified delimiter
+ *			0	The string is start from other delimiter (or not delimited)
  */
 int isDelimiter(String *string, char delimiter) {
 	int index = string->startIndex - 1;
@@ -29,11 +29,16 @@ int isDelimiter(String *string, char delimiter) {
 
 /*
  * This function used by 1 to 2 parameter instructions to parse arguments
+ *
+ * Input:	*rawOperand		Whole line of parameter after the opcode get extracted
+ *
+ * Return:	argument		Argument type object that stores operands
  */
 Argument *evaluate1to2parameter(String *rawOperand) {
 	Argument *argument = malloc(sizeof(Argument));
 	String *subString = malloc(sizeof(String));
 	
+	// 1st parameter
 	stringLeftTrim(rawOperand);
 	subString = getWordAndUpdate(rawOperand, ",;");
 	stringRightTrim(subString);
@@ -43,6 +48,7 @@ Argument *evaluate1to2parameter(String *rawOperand) {
 		Throw(INVALID_ARGUMENT);
 	}
 	
+	// 2nd parameter
 	stringLeftTrim(rawOperand);
 	subString = getWordAndUpdate(rawOperand, ",;");
 	stringRightTrim(subString);
@@ -56,6 +62,7 @@ Argument *evaluate1to2parameter(String *rawOperand) {
 		argument->operand2 = evaluate(subString);
 	}
 	
+	// check for invalid parameter
 	stringLeftTrim(rawOperand);
 	subString = getWordAndUpdate(rawOperand, ",;");
 	stringRightTrim(subString);
@@ -74,11 +81,16 @@ finish:
 
 /*
  * This function used by 1 to 3 parameter instructions to parse arguments
+ *
+ * Input:	*rawOperand		Whole line of parameter after the opcode get extracted
+ *
+ * Return:	argument		Argument type object that stores operands
  */
 Argument *evaluate1to3parameter(String *rawOperand) {
 	Argument *argument = malloc(sizeof(Argument));
 	String *subString = malloc(sizeof(String));
 	
+	// 1st parameter
 	stringLeftTrim(rawOperand);
 	subString = getWordAndUpdate(rawOperand, ",;");
 	stringRightTrim(subString);
@@ -88,6 +100,7 @@ Argument *evaluate1to3parameter(String *rawOperand) {
 		Throw(INVALID_ARGUMENT);
 	}
 	
+	// 2nd parameter
 	stringLeftTrim(rawOperand);
 	subString = getWordAndUpdate(rawOperand, ",;");
 	stringRightTrim(subString);
@@ -97,10 +110,17 @@ Argument *evaluate1to3parameter(String *rawOperand) {
 		argument->operand2 = -1;
 		argument->operand3 = -1;
 		goto finish;
-	} else {
-		argument->operand2 = evaluate(subString);
+	} else { // subString->length != 0
+		if(subString->length == 1 && subString->rawString[subString->startIndex] == 'f') {
+			argument->operand2 = 1;
+		} else if(subString->length == 1 && subString->rawString[subString->startIndex] == 'w') {
+			argument->operand2 = 0;
+		} else {
+			argument->operand2 = evaluate(subString);
+		}
 	}
-	
+
+	// 3rd parameter
 	stringLeftTrim(rawOperand);
 	subString = getWordAndUpdate(rawOperand, ",;");
 	stringRightTrim(subString);
@@ -113,6 +133,7 @@ Argument *evaluate1to3parameter(String *rawOperand) {
 		argument->operand3 = evaluate(subString);
 	}
 	
+	// check for invalid parameter
 	stringLeftTrim(rawOperand);
 	subString = getWordAndUpdate(rawOperand, ",;");
 	stringRightTrim(subString);
@@ -127,11 +148,16 @@ finish:
 
 /*
  * This function used by 2 to 3 parameter instructions to parse arguments
+ *
+ * Input:	*rawOperand		Whole line of parameter after the opcode get extracted
+ *
+ * Return:	argument		Argument type object that stores operands
  */
 Argument *evaluate2to3parameter(String *rawOperand) {
 	Argument *argument = malloc(sizeof(Argument));
 	String *subString = malloc(sizeof(String));
 	
+	// 1st parameter
 	stringLeftTrim(rawOperand);
 	subString = getWordAndUpdate(rawOperand, ",;");
 	stringRightTrim(subString);
@@ -141,6 +167,7 @@ Argument *evaluate2to3parameter(String *rawOperand) {
 		Throw(INVALID_ARGUMENT);
 	}
 	
+	// 2nd parameter
 	stringLeftTrim(rawOperand);
 	subString = getWordAndUpdate(rawOperand, ",;");
 	stringRightTrim(subString);
@@ -150,6 +177,7 @@ Argument *evaluate2to3parameter(String *rawOperand) {
 		Throw(INVALID_ARGUMENT);
 	}
 	
+	// 3rd parameter
 	stringLeftTrim(rawOperand);
 	subString = getWordAndUpdate(rawOperand, ",;");
 	stringRightTrim(subString);
@@ -162,6 +190,7 @@ Argument *evaluate2to3parameter(String *rawOperand) {
 		argument->operand3 = evaluate(subString);
 	}
 	
+	// check for invalid paramter
 	stringLeftTrim(rawOperand);
 	subString = getWordAndUpdate(rawOperand, ",;");
 	stringRightTrim(subString);
@@ -170,7 +199,6 @@ Argument *evaluate2to3parameter(String *rawOperand) {
 	}
 
 finish:
-
 
 	return argument;
 }
