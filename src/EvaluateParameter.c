@@ -66,7 +66,7 @@ Argument *evaluate1to2parameter(String *rawOperand) {
 	stringLeftTrim(rawOperand);
 	subString = getWordAndUpdate(rawOperand, ",;");
 	stringRightTrim(subString);
-	if(isDelimiter(subString, ';') || subString->length == 0) {
+	if((isDelimiter(subString, ';') || subString->length == 0) && isDelimiter(subString, ',') == 0){ // is a comment or a zero length string and it is not a parameter
 		argument->operand3 = -1;
 	} else {
 		Throw(INVALID_ARGUMENT);
@@ -137,7 +137,7 @@ Argument *evaluate1to3parameter(String *rawOperand) {
 	stringLeftTrim(rawOperand);
 	subString = getWordAndUpdate(rawOperand, ",;");
 	stringRightTrim(subString);
-	if((isDelimiter(subString, ';') == 0 && subString->length > 0) || isDelimiter(subString, ',')) {
+	if((isDelimiter(subString, ';') == 0 && subString->length > 0) || isDelimiter(subString, ',')) { // is not a comment and a string of the length is more than zero
 		Throw(INVALID_ARGUMENT);
 	}
 
