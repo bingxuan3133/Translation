@@ -50,6 +50,23 @@ char *stringCopy(String *source, int relStartIndex, int length) {
 	return destination;
 }
 
+int stringCompare(char *expectString, String *stringObject) {
+	int i = 0, j = stringObject->startIndex;
+
+		for(i = 0; (expectString[i] != 0) && (i < stringObject->length); i++) {
+			if(expectString[i] != stringObject->rawString[j]) {
+				return 0;
+			}
+			j++;
+		}
+		
+		if(i == stringObject->length) {
+			return 1;
+		} else {
+			return 0;
+		}
+}
+
 /*
  * This function is to trim out the left space/tab of string
  *

@@ -386,3 +386,35 @@ void test_stringCopy_should_copy_hello_world_to_a_char_array() {
 	
 	free(buffer);
 }
+
+void test_stringCompare_should_return_1_if_both_strings_are_the_same() {
+	String string = {.rawString = "hello world", .startIndex = 0, .length = 5};
+	int result;
+
+	result = stringCompare("hello", &string);
+	TEST_ASSERT_EQUAL(1, result);
+}
+
+void test_stringCompare_given_ooohelloooo_with_start_index_3_and_length_5_should_return_1() {
+	String string = {.rawString = "ooohelloooo", .startIndex = 3, .length = 5};
+	int result;
+
+	result = stringCompare("hello", &string);
+	TEST_ASSERT_EQUAL(1, result);
+}
+
+void test_stringCompare_should_return_0_if_both_strings_are_not_the_same() {
+	String string = {.rawString = "hello world", .startIndex = 1, .length = 5};
+	int result;
+
+	result = stringCompare("hello", &string);
+	TEST_ASSERT_EQUAL(0, result);
+}
+
+void test_stringCompare_should_return_0_if_both_strings_are_not_the_same_length() {
+	String string = {.rawString = "hello world", .startIndex = 0, .length = 6};
+	int result;
+
+	result = stringCompare("hello", &string);
+	TEST_ASSERT_EQUAL(0, result);
+}

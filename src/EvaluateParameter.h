@@ -16,11 +16,6 @@ typedef enum {
 	WREG
 } Operand;
 
-typedef struct {
-	char *name;
-	Argument (*evaluate)(String *);
-} Opcode;
-
 int isDelimiter(String *string, char delimiter);
 
 Argument *evaluate1to2parameter(String *rawOperand);

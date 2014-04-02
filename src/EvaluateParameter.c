@@ -1,9 +1,9 @@
 #include "EvaluateParameter.h"
 #include "StringObject.h"
-#include <stdio.h>
-#include <malloc.h>
 #include "Error.h"
 #include "CException.h"
+#include <stdio.h>
+#include <malloc.h>
 
 Error exception;
 
@@ -143,6 +143,8 @@ Argument *evaluate1to3parameter(String *rawOperand) {
 
 finish:
 
+	free(subString);
+
 	return argument;
 }
 
@@ -199,6 +201,8 @@ Argument *evaluate2to3parameter(String *rawOperand) {
 	}
 
 finish:
+
+	free(subString);
 
 	return argument;
 }

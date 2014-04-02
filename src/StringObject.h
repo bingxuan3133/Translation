@@ -8,10 +8,10 @@ typedef struct {
 } String;
 
 // Function Prototype
-String *stringCreate(char *expression) ;
-char *stringCopy(String *source, int relStartIndex, int length);
+String *stringCreate(char *expression);
+char *stringCopy(String *str, int relStartIndex, int length);
 char *stringCopyX(String *str, int relStartIndex, int length);
-
+int stringCompare(char *expectString, String *stringObject);
 void stringLeftTrim(String* string);
 void stringRightTrim(String *string);
 
