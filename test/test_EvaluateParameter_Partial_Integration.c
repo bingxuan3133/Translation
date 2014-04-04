@@ -202,7 +202,7 @@ void test_evaluate1to2parameter_should_throw_an_exception_when_there_is_no_any_p
 		argument = evaluate1to2parameter(&parameter);
 		TEST_FAIL_MESSAGE("Should throw exception");
 	} Catch(exception) {
-		TEST_ASSERT_EQUAL(INVALID_ARGUMENT, exception);		
+		TEST_ASSERT_EQUAL(INVALID_LENGTH_OF_ARGUMENT, exception);		
 	}
 	
 	free(argument);
@@ -216,7 +216,7 @@ void test_evaluate1to2parameter_should_throw_an_exception_when_the_first_paramet
 		argument = evaluate1to2parameter(&parameter);
 		TEST_FAIL_MESSAGE("Should throw exception");
 	} Catch(exception) {
-		TEST_ASSERT_EQUAL(INVALID_ARGUMENT, exception);		
+		TEST_ASSERT_EQUAL(INVALID_LENGTH_OF_ARGUMENT, exception);		
 	}
 	
 	free(argument);
@@ -233,7 +233,7 @@ void test_evaluate1to2parameter_should_throw_an_exception_when_the_second_parame
 		argument = evaluate1to2parameter(&parameter);
 		TEST_FAIL_MESSAGE("Should throw exception");
 	} Catch(exception) {
-		TEST_ASSERT_EQUAL(INVALID_ARGUMENT, exception);		
+		TEST_ASSERT_EQUAL(NO_ARGUMENT, exception);		
 	}
 	
 	free(argument);
@@ -253,7 +253,7 @@ void test_evaluate1to2parameter_should_throw_an_exception_when_there_is_a_comma_
 		argument = evaluate1to2parameter(&parameter);
 		TEST_FAIL_MESSAGE("Should throw exception");
 	} Catch(exception) {
-		TEST_ASSERT_EQUAL(INVALID_ARGUMENT, exception);		
+		TEST_ASSERT_EQUAL(INVALID_LENGTH_OF_ARGUMENT, exception);		
 	}
 	
 	free(argument);
@@ -273,7 +273,7 @@ void test_evaluate1to2parameter_should_throw_an_exception_when_there_is_three_pa
 		argument = evaluate1to2parameter(&parameter);
 		TEST_FAIL_MESSAGE("Should throw exception");
 	} Catch(exception) {
-		TEST_ASSERT_EQUAL(INVALID_ARGUMENT, exception);		
+		TEST_ASSERT_EQUAL(INVALID_LENGTH_OF_ARGUMENT, exception);		
 	}
 	
 	free(argument);
@@ -357,12 +357,11 @@ void test_evaluate1to3parameter_should_interpret_f_as_1_and_parse_three_paramete
 	Argument *argument;
 	String parameter = {.rawString = "addwf 0x10, f, ACCESS", .startIndex = 6, .length = 15};
 	String subString1 = {.rawString = "addwf 0x10, f, ACCESS", .startIndex = 6, .length = 4};
-	String subString2 = {.rawString = "addwf 0x10, f, ACCESS", .startIndex = 12, .length = 1};
-	String subString3 = {.rawString = "addwf 0x10, f, ACCESS", .startIndex = 15, .length = 6};
+	String subString2 = {.rawString = "addwf 0x10, f, ACCESS", .startIndex = 15, .length = 6};
 	
 	evaluate_ExpectAndReturn(&subString1, 0x10);
 
-	evaluate_ExpectAndReturn(&subString3, ACCESS);
+	evaluate_ExpectAndReturn(&subString2, ACCESS);
 	
 	Try {
 		argument = evaluate1to3parameter(&parameter);
@@ -383,12 +382,11 @@ void test_evaluate1to3parameter_should_interpret_w_as_0_and_parse_three_paramete
 	Argument *argument;
 	String parameter = {.rawString = "addwf 0x10, w, ACCESS", .startIndex = 6, .length = 15};
 	String subString1 = {.rawString = "addwf 0x10, w, ACCESS", .startIndex = 6, .length = 4};
-	String subString2 = {.rawString = "addwf 0x10, w, ACCESS", .startIndex = 12, .length = 1};
-	String subString3 = {.rawString = "addwf 0x10, w, ACCESS", .startIndex = 15, .length = 6};
+	String subString2 = {.rawString = "addwf 0x10, w, ACCESS", .startIndex = 15, .length = 6};
 	
 	evaluate_ExpectAndReturn(&subString1, 0x10);
 
-	evaluate_ExpectAndReturn(&subString3, ACCESS);
+	evaluate_ExpectAndReturn(&subString2, ACCESS);
 	
 	Try {
 		argument = evaluate1to3parameter(&parameter);
@@ -399,6 +397,31 @@ void test_evaluate1to3parameter_should_interpret_w_as_0_and_parse_three_paramete
 	TEST_ASSERT_NOT_NULL(argument);
 	TEST_ASSERT_EQUAL(0x10, argument->operand1);
 	TEST_ASSERT_EQUAL(0, argument->operand2);
+	TEST_ASSERT_EQUAL(ACCESS, argument->operand3);
+	TEST_ASSERT_EQUAL(0, parameter.length);
+	
+	free(argument);
+}
+
+void test_evaluate1to3parameter_should_interpret_f_as_1_and_parse_three_parameters_to_argument_even_with_some_spaces() {
+	Argument *argument;
+	String parameter = {.rawString = "addwf 0x10 , f , ACCESS", .startIndex = 6, .length = 17};
+	String subString1 = {.rawString = "addwf 0x10 , f , ACCESS", .startIndex = 6, .length = 4};
+	String subString2 = {.rawString = "addwf 0x10 , f , ACCESS", .startIndex = 17, .length = 6};
+	
+	evaluate_ExpectAndReturn(&subString1, 0x10);
+
+	evaluate_ExpectAndReturn(&subString2, ACCESS);
+	
+	Try {
+		argument = evaluate1to3parameter(&parameter);
+	} Catch(exception) {
+		TEST_FAIL_MESSAGE("Should not throw exception");
+	}
+	
+	TEST_ASSERT_NOT_NULL(argument);
+	TEST_ASSERT_EQUAL(0x10, argument->operand1);
+	TEST_ASSERT_EQUAL(1, argument->operand2);
 	TEST_ASSERT_EQUAL(ACCESS, argument->operand3);
 	TEST_ASSERT_EQUAL(0, parameter.length);
 	
@@ -512,7 +535,7 @@ void test_evaluate1to3parameter_should_throw_an_exception_when_there_is_no_any_p
 		argument = evaluate1to3parameter(&parameter);
 		TEST_FAIL_MESSAGE("Should throw an exception");
 	} Catch(exception) {
-		TEST_ASSERT_EQUAL(INVALID_ARGUMENT, exception);
+		TEST_ASSERT_EQUAL(INVALID_LENGTH_OF_ARGUMENT, exception);
 	}
 
 	free(argument);
@@ -526,7 +549,7 @@ void test_evaluate1to3parameter_should_throw_an_exception_when_there_is_only_com
 		argument = evaluate1to3parameter(&parameter);
 		TEST_FAIL_MESSAGE("Should throw an exception");
 	} Catch(exception) {
-		TEST_ASSERT_EQUAL(INVALID_ARGUMENT, exception);
+		TEST_ASSERT_EQUAL(INVALID_LENGTH_OF_ARGUMENT, exception);
 	}
 
 	free(argument);
@@ -540,7 +563,7 @@ void test_evaluate1to3parameter_should_throw_an_exception_when_the_first_paramet
 		argument = evaluate1to3parameter(&parameter);
 		TEST_FAIL_MESSAGE("Should throw an exception");
 	} Catch(exception) {
-		TEST_ASSERT_EQUAL(INVALID_ARGUMENT, exception);
+		TEST_ASSERT_EQUAL(INVALID_LENGTH_OF_ARGUMENT, exception);
 	}
 
 	free(argument);
@@ -557,7 +580,7 @@ void test_evaluate1to3parameter_should_throw_an_exception_when_the_second_parame
 		argument = evaluate1to3parameter(&parameter);
 		TEST_FAIL_MESSAGE("Should throw an exception");
 	} Catch(exception) {
-		TEST_ASSERT_EQUAL(INVALID_ARGUMENT, exception);		
+		TEST_ASSERT_EQUAL(NO_ARGUMENT, exception);		
 	}
 	
 	free(argument);
@@ -576,7 +599,7 @@ void test_evaluate1to3parameter_should_throw_an_exception_when_the_third_paramet
 		argument = evaluate1to3parameter(&parameter);
 		TEST_FAIL_MESSAGE("Should throw an exception");
 	} Catch(exception) {
-		TEST_ASSERT_EQUAL(INVALID_ARGUMENT, exception);		
+		TEST_ASSERT_EQUAL(NO_ARGUMENT, exception);		
 	}
 	
 	free(argument);
@@ -599,7 +622,7 @@ void test_evaluate1to3parameter_should_throw_an_exception_when_there_is_a_comma_
 		argument = evaluate1to3parameter(&parameter);
 		TEST_FAIL_MESSAGE("Should throw an exception");
 	} Catch(exception) {
-		TEST_ASSERT_EQUAL(INVALID_ARGUMENT, exception);		
+		TEST_ASSERT_EQUAL(INVALID_LENGTH_OF_ARGUMENT, exception);		
 	}
 	
 	free(argument);
@@ -622,7 +645,7 @@ void test_evaluate1to3parameter_should_throw_an_exception_when_there_are_four_pa
 		argument = evaluate1to3parameter(&parameter);
 		TEST_FAIL_MESSAGE("Should throw an exception");
 	} Catch(exception) {
-		TEST_ASSERT_EQUAL(INVALID_ARGUMENT, exception);		
+		TEST_ASSERT_EQUAL(INVALID_LENGTH_OF_ARGUMENT, exception);		
 	}
 	
 	free(argument);
@@ -739,7 +762,7 @@ void test_evaluate2to3parameter_should_throw_an_exception_when_there_is_no_any_p
 		argument = evaluate2to3parameter(&parameter);
 		TEST_FAIL_MESSAGE("Should throw an exception");
 	} Catch(exception) {
-		TEST_ASSERT_EQUAL(INVALID_ARGUMENT, exception);
+		TEST_ASSERT_EQUAL(INVALID_LENGTH_OF_ARGUMENT, exception);
 	}
 
 	free(argument);
@@ -756,7 +779,7 @@ void test_evaluate2to3parameter_should_throw_an_exception_when_there_is_only_one
 		argument = evaluate2to3parameter(&parameter);
 		TEST_FAIL_MESSAGE("Should throw an exception");
 	} Catch(exception) {
-		TEST_ASSERT_EQUAL(INVALID_ARGUMENT, exception);
+		TEST_ASSERT_EQUAL(INVALID_LENGTH_OF_ARGUMENT, exception);
 	}
 	
 	free(argument);
@@ -770,7 +793,7 @@ void test_evaluate2to3parameter_should_throw_an_exception_when_the_first_paramet
 		argument = evaluate2to3parameter(&parameter);
 		TEST_FAIL_MESSAGE("Should throw an exception");
 	} Catch(exception) {
-		TEST_ASSERT_EQUAL(INVALID_ARGUMENT, exception);
+		TEST_ASSERT_EQUAL(INVALID_LENGTH_OF_ARGUMENT, exception);
 	}
 	
 	free(argument);
@@ -787,7 +810,7 @@ void test_evaluate2to3parameter_should_throw_an_exception_when_the_second_argume
 		argument = evaluate2to3parameter(&parameter);
 		TEST_FAIL_MESSAGE("Should throw an exception");
 	} Catch(exception) {
-		TEST_ASSERT_EQUAL(INVALID_ARGUMENT, exception);
+		TEST_ASSERT_EQUAL(INVALID_LENGTH_OF_ARGUMENT, exception);
 	}
 	
 	free(argument);
@@ -806,7 +829,7 @@ void test_evaluate2to3parameter_should_throw_an_exception_when_the_third_paramet
 		argument = evaluate2to3parameter(&parameter);
 		TEST_FAIL_MESSAGE("Should throw an exception");
 	} Catch(exception) {
-		TEST_ASSERT_EQUAL(INVALID_ARGUMENT, exception);
+		TEST_ASSERT_EQUAL(NO_ARGUMENT, exception);
 	}
 	
 	free(argument);
@@ -829,7 +852,7 @@ void test_evaluate2to3parameter_should_throw_an_exception_when_there_is_comma_af
 		argument = evaluate2to3parameter(&parameter);
 		TEST_FAIL_MESSAGE("Should throw an exception");
 	} Catch(exception) {
-		TEST_ASSERT_EQUAL(INVALID_ARGUMENT, exception);		
+		TEST_ASSERT_EQUAL(INVALID_LENGTH_OF_ARGUMENT, exception);		
 	}
 	
 	free(argument);
@@ -852,7 +875,7 @@ void test_evaluate2to3parameter_should_throw_an_exception_when_there_are_four_pa
 		argument = evaluate2to3parameter(&parameter);
 		TEST_FAIL_MESSAGE("Should throw an exception");
 	} Catch(exception) {
-		TEST_ASSERT_EQUAL(INVALID_ARGUMENT, exception);		
+		TEST_ASSERT_EQUAL(INVALID_LENGTH_OF_ARGUMENT, exception);		
 	}
 	
 	free(argument);

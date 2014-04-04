@@ -18,6 +18,9 @@ typedef enum {
 
 int isDelimiter(String *string, char delimiter);
 
+Argument *evaluate0parameter(String *rawOperand);
+Argument *evaluate1parameter(String *rawOperand);
+Argument *evaluate2parameter(String *rawOperand);
 Argument *evaluate1to2parameter(String *rawOperand);
 Argument *evaluate1to3parameter(String *rawOperand);
 Argument *evaluate2to3parameter(String *rawOperand);

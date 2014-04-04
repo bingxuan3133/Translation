@@ -411,10 +411,18 @@ void test_stringCompare_should_return_0_if_both_strings_are_not_the_same() {
 	TEST_ASSERT_EQUAL(0, result);
 }
 
-void test_stringCompare_should_return_0_if_both_strings_are_not_the_same_length() {
+void test_stringCompare_should_return_0_if_actual_string_is_longer_than_expected_string() {
 	String string = {.rawString = "hello world", .startIndex = 0, .length = 6};
 	int result;
 
+	result = stringCompare("hello", &string);
+	TEST_ASSERT_EQUAL(0, result);
+}
+
+void test_stringCompare_should_return_0_if_actual_string_is_shorter_than_expected_string() {
+	String string = {.rawString = "he", .startIndex = 0, .length = 2};
+	int result;
+	
 	result = stringCompare("hello", &string);
 	TEST_ASSERT_EQUAL(0, result);
 }

@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <malloc.h>
 
-Error exception;
+extern Error exception;
 
 /*
  * This function check the string is start from the specified delimiter or not
@@ -45,7 +45,7 @@ Argument *evaluate1to2parameter(String *rawOperand) {
 	if(subString->length != 0) {
 		argument->operand1 = evaluate(subString);
 	} else {
-		Throw(INVALID_ARGUMENT);
+		Throw(INVALID_LENGTH_OF_ARGUMENT);
 	}
 	
 	// 2nd parameter
@@ -53,7 +53,7 @@ Argument *evaluate1to2parameter(String *rawOperand) {
 	subString = getWordAndUpdate(rawOperand, ",;");
 	stringRightTrim(subString);
 	if(isDelimiter(subString, ',') == 1 && subString->length == 0) {
-		Throw(INVALID_ARGUMENT);
+		Throw(NO_ARGUMENT);
 	} else if(isDelimiter(subString, ';') == 1 || subString->length == 0) {
 		argument->operand2 = -1;
 		argument->operand3 = -1;
@@ -69,7 +69,7 @@ Argument *evaluate1to2parameter(String *rawOperand) {
 	if((isDelimiter(subString, ';') || subString->length == 0) && isDelimiter(subString, ',') == 0){ // is a comment or a zero length string and it is not a parameter
 		argument->operand3 = -1;
 	} else {
-		Throw(INVALID_ARGUMENT);
+		Throw(INVALID_LENGTH_OF_ARGUMENT);
 	}
 
 finish:
@@ -97,7 +97,7 @@ Argument *evaluate1to3parameter(String *rawOperand) {
 	if(subString->length != 0) {
 		argument->operand1 = evaluate(subString);
 	} else {
-		Throw(INVALID_ARGUMENT);
+		Throw(INVALID_LENGTH_OF_ARGUMENT);
 	}
 	
 	// 2nd parameter
@@ -105,7 +105,7 @@ Argument *evaluate1to3parameter(String *rawOperand) {
 	subString = getWordAndUpdate(rawOperand, ",;");
 	stringRightTrim(subString);
 	if(isDelimiter(subString, ',') == 1 && subString->length == 0) {
-		Throw(INVALID_ARGUMENT);
+		Throw(NO_ARGUMENT);
 	} else if(isDelimiter(subString, ';') == 1 || subString->length == 0) {
 		argument->operand2 = -1;
 		argument->operand3 = -1;
@@ -125,7 +125,7 @@ Argument *evaluate1to3parameter(String *rawOperand) {
 	subString = getWordAndUpdate(rawOperand, ",;");
 	stringRightTrim(subString);
 	if(isDelimiter(subString, ',') == 1 && subString->length == 0) {
-		Throw(INVALID_ARGUMENT);
+		Throw(NO_ARGUMENT);
 	} else if(isDelimiter(subString, ';') == 1 || subString->length == 0) {
 		argument->operand3 = -1;
 		goto finish;
@@ -138,7 +138,7 @@ Argument *evaluate1to3parameter(String *rawOperand) {
 	subString = getWordAndUpdate(rawOperand, ",;");
 	stringRightTrim(subString);
 	if((isDelimiter(subString, ';') == 0 && subString->length > 0) || isDelimiter(subString, ',')) { // is not a comment and a string of the length is more than zero
-		Throw(INVALID_ARGUMENT);
+		Throw(INVALID_LENGTH_OF_ARGUMENT);
 	}
 
 finish:
@@ -166,7 +166,7 @@ Argument *evaluate2to3parameter(String *rawOperand) {
 	if(subString->length != 0) {
 		argument->operand1 = evaluate(subString);
 	} else {
-		Throw(INVALID_ARGUMENT);
+		Throw(INVALID_LENGTH_OF_ARGUMENT);
 	}
 	
 	// 2nd parameter
@@ -176,7 +176,7 @@ Argument *evaluate2to3parameter(String *rawOperand) {
 	if(subString->length != 0) {
 		argument->operand2 = evaluate(subString);
 	} else {
-		Throw(INVALID_ARGUMENT);
+		Throw(INVALID_LENGTH_OF_ARGUMENT);
 	}
 	
 	// 3rd parameter
@@ -184,7 +184,7 @@ Argument *evaluate2to3parameter(String *rawOperand) {
 	subString = getWordAndUpdate(rawOperand, ",;");
 	stringRightTrim(subString);
 	if(isDelimiter(subString, ',') == 1 && subString->length == 0) {
-		Throw(INVALID_ARGUMENT);
+		Throw(NO_ARGUMENT);
 	} else if(isDelimiter(subString, ';') == 1 || subString->length == 0) {
 		argument->operand3 = -1;
 		goto finish;
@@ -197,7 +197,7 @@ Argument *evaluate2to3parameter(String *rawOperand) {
 	subString = getWordAndUpdate(rawOperand, ",;");
 	stringRightTrim(subString);
 	if((isDelimiter(subString, ';') == 0 && subString->length > 0) || isDelimiter(subString, ',')) {
-		Throw(INVALID_ARGUMENT);
+		Throw(INVALID_LENGTH_OF_ARGUMENT);
 	}
 
 finish:

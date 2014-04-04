@@ -53,7 +53,7 @@ char *stringCopy(String *source, int relStartIndex, int length) {
 int stringCompare(char *expectString, String *stringObject) {
 	int i = 0, j = stringObject->startIndex;
 
-		for(i = 0; (expectString[i] != 0) && (i < stringObject->length); i++) {
+		for(i = 0; expectString[i] != 0; i++) {
 			if(expectString[i] != stringObject->rawString[j]) {
 				return 0;
 			}
