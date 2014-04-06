@@ -341,11 +341,11 @@ void test_getWordAndUpdate_should_get_a_zero_length_word_when_getting_no_word_be
 	free(subString);
 }
 
-void test_stringCopy_should_copy_hello_only_to_a_char_array() {
+void test_stringCopyX_should_copy_hello_only_to_a_char_array() {
 	String string = {.rawString = "hello world", .startIndex = 0, .length = 11};
 	char *buffer;
 	
-	buffer = stringCopy(&string, 0, 5);
+	buffer = stringCopyX(&string, 0, 5);
 	
 	TEST_ASSERT_NOT_NULL(buffer);
 	TEST_ASSERT_EQUAL('h', buffer[0]);
@@ -358,11 +358,11 @@ void test_stringCopy_should_copy_hello_only_to_a_char_array() {
 	free(buffer);
 }
 
-void test_stringCopy_should_copy_world_only_to_a_char_array() {
+void test_stringCopyX_should_copy_world_only_to_a_char_array() {
 	String string = {.rawString = "hello world", .startIndex = 0, .length = 11};
 	char *buffer;
 	
-	buffer = stringCopy(&string, 6, 5);
+	buffer = stringCopyX(&string, 6, 5);
 	
 	TEST_ASSERT_NOT_NULL(buffer);
 	TEST_ASSERT_EQUAL('w', buffer[0]);
@@ -375,11 +375,11 @@ void test_stringCopy_should_copy_world_only_to_a_char_array() {
 	free(buffer);
 }
 
-void test_stringCopy_should_copy_hello_world_to_a_char_array() {
+void test_stringCopyX_should_copy_hello_world_to_a_char_array() {
 	String string = {.rawString = "hello world", .startIndex = 0, .length = 11};
 	char *buffer;
 	
-	buffer = stringCopy(&string, 0, string.length);
+	buffer = stringCopyX(&string, 0, string.length);
 	
 	TEST_ASSERT_NOT_NULL(buffer);
 	TEST_ASSERT_EQUAL_STRING("hello world", buffer);
@@ -411,7 +411,7 @@ void test_stringCompare_should_return_0_if_both_strings_are_not_the_same() {
 	TEST_ASSERT_EQUAL(0, result);
 }
 
-void test_stringCompare_should_return_0_if_actual_string_is_longer_than_expected_string() {
+void test_stringCompare_should_return_0_if_actual_string_is_longer_than_expected_string_even_they_are_partially_same() {
 	String string = {.rawString = "hello world", .startIndex = 0, .length = 6};
 	int result;
 
@@ -419,8 +419,40 @@ void test_stringCompare_should_return_0_if_actual_string_is_longer_than_expected
 	TEST_ASSERT_EQUAL(0, result);
 }
 
-void test_stringCompare_should_return_0_if_actual_string_is_shorter_than_expected_string() {
+void test_stringCompare_should_return_0_if_actual_string_is_shorter_than_expected_string_even_they_are_partially_same() {
 	String string = {.rawString = "he", .startIndex = 0, .length = 2};
+	int result;
+	
+	result = stringCompare("hello", &string);
+	TEST_ASSERT_EQUAL(0, result);
+}
+
+void test_stringCompareIgnoreCase_given_HELLO_and_hello_should_return_1() {
+	String string = {.rawString = "HELLO WORLD", .startIndex = 0, .length = 5};
+	int result;
+
+	result = stringCompareIgnoreCase("hello", &string);
+	TEST_ASSERT_EQUAL(1, result);
+}
+
+void test_stringCompareIgnoreCase_given_HeLLo_and_hello_should_return_1() {
+	String string = {.rawString = "HeLLo", .startIndex = 0, .length = 5};
+	int result;
+
+	result = stringCompareIgnoreCase("hello", &string);
+	TEST_ASSERT_EQUAL(1, result);
+}
+
+void test_stringCompareIgnoreCase_given_HELLOW_and_hello_should_return_0() {
+	String string = {.rawString = "HELLOW", .startIndex = 0, .length = 6};
+	int result;
+
+	result = stringCompare("hello", &string);
+	TEST_ASSERT_EQUAL(0, result);
+}
+
+void test_stringCompareIgnoreCase_given_HE_and_hello_should_return_0() {
+	String string = {.rawString = "HE", .startIndex = 0, .length = 2};
 	int result;
 	
 	result = stringCompare("hello", &string);

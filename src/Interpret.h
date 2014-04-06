@@ -50,7 +50,8 @@ typedef struct {
 typedef struct {
 	char *mnemonic;
 	Opcode opcode;
-	Argument *(*evaluate)(String *); 
+	Argument *(*evaluateParameter)(String *);
+	int (*execute)(Bytecode);
 } Instruction;
 
 Bytecode interpret(String *instruction);

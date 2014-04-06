@@ -4,6 +4,7 @@
 #include "StringObject.h"
 #include "Error.h"
 #include "mock_Token.h"
+#include "mock_ReadFile.h"
 #include "CException.h"
 
 extern Error exception;
@@ -110,6 +111,55 @@ void test_interpret_btf_0x10_7_should_throw_INVALID_OPCODE(void) {
 	}
 }
 
+void test_interpret_btg_0x10_should_throw_INVALID_LENGTH_OF_ARGUMENT(void) {
+	String instruction = {.rawString = "btg 0x10", .startIndex = 0, .length = 8};
+	String subString1 = {.rawString = "btg 0x10", .startIndex = 4, .length = 4};
+	Bytecode bytecode;
+	
+	evaluate_ExpectAndReturn(&subString1, 0x10);
+	
+	Try {
+		bytecode = interpret(&instruction);
+		TEST_FAIL_MESSAGE("should throw an exception");
+	} Catch (exception) {
+		TEST_ASSERT_EQUAL(INVALID_LENGTH_OF_ARGUMENT, exception);
+	}
+}
 
 
+void test_interpretAll_should_(void) {
+	Bytecode programCode[100];
+	
+	char *ten = "movwf 0x10";
+	char *twenty = "movwf 0x20";
+	
+	String subString1 = {.rawString = ten, .startIndex = 0, .length = 10};
+	String subString2 = {.rawString = twenty, .startIndex = 0, .length = 10};
+	String subString3 = {.rawString = ten, .startIndex = 6, .length = 4};
+	String subString4 = {.rawString = twenty, .startIndex = 6, .length = 4};
+	
+	readLine_ExpectAndReturn(&subString1);
+	evaluate_ExpectAndReturn(&subString3, 0x10);
+	
+	readLine_ExpectAndReturn(&subString2);
+	evaluate_ExpectAndReturn(&subString4, 0x20);
+	
+	readLine_ExpectAndReturn(NULL);
+	
+	Try {
+		interpretAll(&programCode[0]);
+	} Catch (exception) {
+		TEST_FAIL_MESSAGE("should not throw an exception");
+	}
+	
+	TEST_ASSERT_EQUAL(MOVWF, programCode[0].opcode);
+	TEST_ASSERT_EQUAL(0x10, programCode[0].operand1);
+	TEST_ASSERT_EQUAL(-1, programCode[0].operand2);
+	TEST_ASSERT_EQUAL(-1, programCode[0].operand3);
+
+	TEST_ASSERT_EQUAL(MOVWF, programCode[1].opcode);
+	TEST_ASSERT_EQUAL(0x20, programCode[1].operand1);
+	TEST_ASSERT_EQUAL(-1, programCode[1].operand2);
+	TEST_ASSERT_EQUAL(-1, programCode[1].operand3);
+}
 

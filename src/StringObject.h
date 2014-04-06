@@ -9,9 +9,10 @@ typedef struct {
 
 // Function Prototype
 String *stringCreate(char *expression);
-char *stringCopy(String *str, int relStartIndex, int length);
+void stringCopy(char *source, char*destination, int startLocation, int length);
 char *stringCopyX(String *str, int relStartIndex, int length);
-int stringCompare(char *expectString, String *stringObject);
+int stringCompare(char *expectedString, String *stringObject);
+int stringCompareIgnoreCase(char *expectedString, String *stringObject);
 void stringLeftTrim(String* string);
 void stringRightTrim(String *string);
 
